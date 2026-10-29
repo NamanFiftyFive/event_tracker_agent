@@ -90,14 +90,46 @@ fvm flutter run --dart-define-from-file=event_tracker.json
 # Android emulator, for Live events: add --dart-define=TRACKER_DEV_SERVER=http://10.0.2.2:7777
 ```
 
-**Later runs:** the key stays in `event_tracker.json`, so just run the app again. The local dashboard
-(report, Connect, Live events) stops when the Claude session ends; start it again in its own terminal:
+## Later runs
+
+The setup is done once: the key stays in `event_tracker.json`, so to just run the app again:
 
 ```bash
-fvm dart pub global run event_tracker_setup dashboard .     # http://localhost:7777, Ctrl+C to stop
+fvm flutter run --dart-define-from-file=event_tracker.json
 ```
 
-To track new screens or buttons later, ask the agent again: it only proposes what's new.
+### See the local dashboard again
+
+The dashboard (tracking report, Connect, Live events) is not a separate service: it stops when the Claude
+session (or terminal) that started it ends, so http://localhost:7777 then shows nothing. To see it again:
+
+1. **Start the dashboard** in a new terminal, and keep that terminal open (Ctrl+C stops it):
+   ```bash
+   cd my_flutter_app
+   fvm dart pub global run event_tracker_setup dashboard .
+   ```
+   It opens **http://localhost:7777** in the browser.
+2. **Restart the app**, so it connects to the dashboard:
+   ```bash
+   cd my_flutter_app
+   fvm flutter run --dart-define-from-file=event_tracker.json
+   # Android emulator: add --dart-define=TRACKER_DEV_SERVER=http://10.0.2.2:7777
+   ```
+3. **Open Live events** (http://localhost:7777/#live) and use the app: each event appears as it happens, and
+   each chosen event gets a ✓.
+
+Live events shows only what is sent **while the dashboard runs**; nothing earlier is kept there. Every event,
+older ones included, still reaches the analytics server, so the full history is in the dashboard app's
+**Events** tab.
+
+Is it running? Open http://localhost:7777, or run `lsof -nP -iTCP:7777 -sTCP:LISTEN` (no output = not
+running). Port 7777 busy? Add `--port 7778` to the dashboard command (and use that port in
+`TRACKER_DEV_SERVER`).
+
+### Track more later
+
+To track new screens or buttons, ask the agent again ("add analytics to this app"): it scans again, only
+proposes what's new, and leaves everything already done alone.
 
 Other ways to ask: "where should this app track events?", "set up event tracking".
 
