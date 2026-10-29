@@ -1,6 +1,6 @@
 {
   "name": "flutter-event-tracker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Sets up product analytics in any Flutter app: finds where events should be tracked, shows a local dashboard report, and after your approval adds the event_tracker_analytics SDK and the track calls, then checks the app still builds and its tests pass.",
   "author": {
     "name": "FiftyFive Technologies"

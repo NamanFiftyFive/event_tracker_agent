@@ -9,7 +9,7 @@
       "name": "flutter-event-tracker",
       "source": "./",
       "description": "Finds where a Flutter app should track events, shows a local report, and after approval adds the analytics SDK and the track calls.",
-      "version": "0.1.0"
+      "version": "0.1.1"
     }
   ]
 }

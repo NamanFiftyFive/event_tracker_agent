@@ -37,38 +37,69 @@ git and file tools). No commits, pushes, deletes, file redirects or network tool
 ## Requirements
 
 - Claude Code
-- Dart 3.13+ / Flutter 3.47+ (FVM is detected)
-- The setup tool (`event_tracker_setup`), installed once with `dart pub global activate` (the agent asks first):
+- Dart 3.13+ / Flutter 3.47+. With FVM, run `fvm use 3.47.0` inside the app folder (the agent also finds
+  FVM set in a parent folder, or uses it when `flutter` isn't on the PATH)
+- The setup tool (`event_tracker_setup`); the agent installs it after asking. By hand:
   ```bash
   dart pub global activate --source git https://github.com/NamanFiftyFive/event_tracker_setup.git
-  dart pub global activate --source git git@github.com:NamanFiftyFive/event_tracker_setup.git   # while private (SSH access)
-  dart pub global activate --source path ~/Desktop/hackathon_2026/event_tracker_setup           # local copy
   ```
 - Python 3 (for the guard hook)
-- The SDK must be reachable from the app: by default `init` uses the SDK's git repo; pass `--sdk-path` (local)
-  or `--sdk-version` (pub.dev) through the agent if needed.
+- Internet access to GitHub: `init` adds the SDK from its public git repo by default (`--sdk-path` for a local
+  copy, `--sdk-version` for pub.dev, if the developer asks)
+- Git in the app is recommended (not required), so the changes can be reviewed with `git diff` and undone
 
-## Install
+All three repos are public:
+plugin https://github.com/NamanFiftyFive/event_tracker_agent,
+setup tool https://github.com/NamanFiftyFive/event_tracker_setup,
+SDK https://github.com/NamanFiftyFive/evnet_tracker_analytics_sdk.
 
-Try it for one session without installing:
+## Install (from GitHub)
+
+Once per computer:
+
+```bash
+claude plugin marketplace add NamanFiftyFive/event_tracker_agent
+claude plugin install flutter-event-tracker@event-tracker
+claude plugin list          # flutter-event-tracker@event-tracker, enabled
+```
+
+Or inside Claude Code: `/plugin` → Marketplaces → Add marketplace → `NamanFiftyFive/event_tracker_agent` →
+install **flutter-event-tracker**. Restart an open Claude session afterwards.
+
+| To | Run |
+|---|---|
+| Update after changes are pushed | `claude plugin marketplace update event-tracker` then `claude plugin update flutter-event-tracker@event-tracker` |
+| Turn off / on | `claude plugin disable flutter-event-tracker@event-tracker` / `enable` |
+| Remove | `claude plugin uninstall flutter-event-tracker@event-tracker` |
+| Try a local copy without installing (plugin development) | `claude --plugin-dir ~/Desktop/hackathon_2026/event_tracker_agent` |
+
+## Use
 
 ```bash
 cd my_flutter_app
-claude --plugin-dir ~/Desktop/hackathon_2026/event_tracker_agent
+fvm use 3.47.0                                                   # FVM users, once
+git init && git add -A && git commit -m "Before analytics"       # recommended, once
+claude
 ```
 
-Install (user scope) from a local folder or a git repo:
+Then ask "add analytics to this app" (or run `/flutter-event-tracker:setup-tracking`). After you approve and
+the agent finishes, run the app with the key it saved:
 
 ```bash
-claude plugin marketplace add NamanFiftyFive/event_tracker_agent     # or ~/Desktop/hackathon_2026/event_tracker_agent
-claude plugin install flutter-event-tracker@event-tracker
+fvm flutter run --dart-define-from-file=event_tracker.json
+# Android emulator, for Live events: add --dart-define=TRACKER_DEV_SERVER=http://10.0.2.2:7777
 ```
 
-Repos: plugin https://github.com/NamanFiftyFive/event_tracker_agent, setup tool
-https://github.com/NamanFiftyFive/event_tracker_setup, SDK https://github.com/NamanFiftyFive/evnet_tracker_analytics_sdk.
+**Later runs:** the key stays in `event_tracker.json`, so just run the app again. The local dashboard
+(report, Connect, Live events) stops when the Claude session ends; start it again in its own terminal:
 
-Then, in the app folder: `/flutter-event-tracker:setup-tracking`, or just ask
-"add analytics to this app" / "where should this app track events?".
+```bash
+fvm dart pub global run event_tracker_setup dashboard .     # http://localhost:7777, Ctrl+C to stop
+```
+
+To track new screens or buttons later, ask the agent again: it only proposes what's new.
+
+Other ways to ask: "where should this app track events?", "set up event tracking".
 
 ## Development
 

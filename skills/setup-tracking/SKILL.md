@@ -29,13 +29,13 @@ Command reference: [references/cli.md](references/cli.md). Below, `<app>` is the
 
 1. Find the app: the current folder, or the folder the user named. It needs `pubspec.yaml` with
    `flutter: sdk: flutter`. If several apps are below the current folder, ask which one.
-2. FVM: if the app has `.fvmrc` or `.fvm/`, use `fvm dart` / `fvm flutter`; otherwise `dart` / `flutter`.
+2. FVM: use `fvm dart` / `fvm flutter` when the app or a folder above it has `.fvmrc` or `.fvm/`, or when
+   `flutter` is not on the PATH but `fvm` is (`command -v flutter`, `command -v fvm`); otherwise `dart` /
+   `flutter`. Check with `<flutter> --version` before going on.
 3. The tool: run `<dart> pub global list` and look for `event_tracker_setup`. If it's missing, tell the
    developer it is needed and ask before installing it:
-   - from GitHub: `<dart> pub global activate --source git https://github.com/NamanFiftyFive/event_tracker_setup.git`
-     (while the repo is private, use `git@github.com:NamanFiftyFive/event_tracker_setup.git`, which needs SSH
-     access to it)
-   - from a local folder: `<dart> pub global activate --source path <folder>`
+   - from GitHub (public): `<dart> pub global activate --source git https://github.com/NamanFiftyFive/event_tracker_setup.git`
+   - from a local folder (only if the developer says so): `<dart> pub global activate --source path <folder>`
    It needs Dart 3.13 or newer (`<dart> --version`); if older, stop and say so.
    `<CLI>` is then `<dart> pub global run event_tracker_setup`.
 4. If the app is a git repo with uncommitted changes, mention it: committing first makes the analytics changes
