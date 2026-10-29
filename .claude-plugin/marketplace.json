@@ -1,0 +1,15 @@
+{
+  "name": "event-tracker",
+  "owner": {
+    "name": "FiftyFive Technologies"
+  },
+  "description": "Analytics setup tools for Flutter apps.",
+  "plugins": [
+    {
+      "name": "flutter-event-tracker",
+      "source": "./",
+      "description": "Finds where a Flutter app should track events, shows a local report, and after approval adds the analytics SDK and the track calls.",
+      "version": "0.1.0"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "description": "flutter-event-tracker guard: keeps the plugin's own event-tracker-integrator subagent inside the app folder (no secrets, no git writes, no deletes). Every other tool call passes through untouched.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Write|Edit|MultiEdit|NotebookEdit|Read|Grep|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/integrator_guard.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
