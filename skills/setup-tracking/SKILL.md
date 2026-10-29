@@ -32,7 +32,9 @@ Command reference: [references/cli.md](references/cli.md). Below, `<app>` is the
 2. FVM: if the app has `.fvmrc` or `.fvm/`, use `fvm dart` / `fvm flutter`; otherwise `dart` / `flutter`.
 3. The tool: run `<dart> pub global list` and look for `event_tracker_setup`. If it's missing, tell the
    developer it is needed and ask before installing it:
-   - from git: `<dart> pub global activate --source git <repo url of event_tracker_setup>`
+   - from GitHub: `<dart> pub global activate --source git https://github.com/NamanFiftyFive/event_tracker_setup.git`
+     (while the repo is private, use `git@github.com:NamanFiftyFive/event_tracker_setup.git`, which needs SSH
+     access to it)
    - from a local folder: `<dart> pub global activate --source path <folder>`
    It needs Dart 3.13 or newer (`<dart> --version`); if older, stop and say so.
    `<CLI>` is then `<dart> pub global run event_tracker_setup`.

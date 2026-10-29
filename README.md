@@ -40,8 +40,9 @@ git and file tools). No commits, pushes, deletes, file redirects or network tool
 - Dart 3.13+ / Flutter 3.47+ (FVM is detected)
 - The setup tool (`event_tracker_setup`), installed once with `dart pub global activate` (the agent asks first):
   ```bash
-  dart pub global activate --source git <event_tracker_setup repo url>
-  dart pub global activate --source path ~/Desktop/hackathon_2026/event_tracker_setup   # local copy
+  dart pub global activate --source git https://github.com/NamanFiftyFive/event_tracker_setup.git
+  dart pub global activate --source git git@github.com:NamanFiftyFive/event_tracker_setup.git   # while private (SSH access)
+  dart pub global activate --source path ~/Desktop/hackathon_2026/event_tracker_setup           # local copy
   ```
 - Python 3 (for the guard hook)
 - The SDK must be reachable from the app: by default `init` uses the SDK's git repo; pass `--sdk-path` (local)
@@ -59,9 +60,12 @@ claude --plugin-dir ~/Desktop/hackathon_2026/event_tracker_agent
 Install (user scope) from a local folder or a git repo:
 
 ```bash
-claude plugin marketplace add ~/Desktop/hackathon_2026/event_tracker_agent     # or the repo URL
+claude plugin marketplace add NamanFiftyFive/event_tracker_agent     # or ~/Desktop/hackathon_2026/event_tracker_agent
 claude plugin install flutter-event-tracker@event-tracker
 ```
+
+Repos: plugin https://github.com/NamanFiftyFive/event_tracker_agent, setup tool
+https://github.com/NamanFiftyFive/event_tracker_setup, SDK https://github.com/NamanFiftyFive/evnet_tracker_analytics_sdk.
 
 Then, in the app folder: `/flutter-event-tracker:setup-tracking`, or just ask
 "add analytics to this app" / "where should this app track events?".
